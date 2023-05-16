@@ -1,5 +1,7 @@
 import  Express  from "express";
 import dotenv from "dotenv"
+import apiRoutes from "./routes/index"
+import { connectDB } from "./database"
 
 //CREAR INSTANCIA DE EXPRESS
 
@@ -8,6 +10,10 @@ const app = Express()
 // traer el puerto de variables de entorno
 
 dotenv.config() // traer la configuracion de env
+
+//CONEXION BASE DE DATOS
+
+connectDB()
 
 //Establecer el puerto en el cual se ejecuta el api
 const port = process.env.PORT || 3200
@@ -18,7 +24,7 @@ app.use(Express.json()) // -> decirle a express que entienda json
 
 // Establecer las rutas a utilizar en el api
 
-
+app.use("/api", apiRoutes)
 
 // traer una direccion get
 
