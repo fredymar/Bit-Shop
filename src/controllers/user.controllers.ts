@@ -1,6 +1,75 @@
 import Express  from "express";
+import userModels from "../models/user.models";
 
+export const getUsers = async (req:Express.Request, res:Express.Response) => {
+    try {
 
-export const createUser = (req: Express.Request,res: Express.Response) => {
-    return res.status(201).json({msg: "Usuario creado"})
+        const result = await userModels.find() //Usuarios existentes
+
+        return res.status(200).json({result})
+        
+    } catch (error) {
+        return res.status(400).json({msg : "Ha ocurrido un error", error})      
+    }
+}
+
+export const createUser = async (req:Express.Request, res:Express.Response) => {
+    try {
+
+        let newUser = req.body
+
+        let mayor = validarEdad(newUser.dateBirth)
+
+        if (mayor) {
+            const userCreated = await userModels.create(newUser)
+            if (userCreated) return res.status(201).json({msg: "Usuario creado" + newUser})
+        }
+        throw {msg : "Ha ocurrido un error"}
+        //let {id, name, lastName, email,username, password, role, active,dateBirth,address, paymentMethods, phoneNumber} = req.body;
+    } catch (error) {
+        return res.status(400).json({msg : "Ha ocurrido un error", error}) 
+    }
+}
+
+export const updateUser = async (req:Express.Request, res:Express.Response) => {
+    try {
+        let {dataToUpdate, _id} = req.body
+        const updatedData = await userModels.findByIdAndUpdate(_id, dataToUpdate)
+        return res.status(200).json({msg: "Usuario Actualizado"})
+    } catch (error) {
+        return res.status(400).json({msg : "Ha ocurrido un error", error}) 
+    }
+}
+
+export const deleteUser = async (req:Express.Request, res:Express.Response) => {
+    try {
+        let {_id} = req.body
+        const deleteData = await userModels.findByIdAndDelete(_id)
+        return res.status(200).json({msg: "Usuario Eliminado"})
+    } catch (error) {
+        return res.status(400).json({msg : "Ha ocurrido un error", error}) 
+    }
+}
+
+export const buscar = async (req:Express.Request, res:Express.Response) => {
+    try {
+        let { _id } = req.body
+        const search = await userModels.findById(_id)
+        return res.status(200).json(search)
+        
+    } catch (error) {
+        return res.status(400).json({msg : "Ha ocurrido un error", error})
+    }
+}
+ function validarEdad (naci : string){
+    let naciTemp = new Date(naci)
+    let actualidad = new Date().getTime()
+    if (actualidad > 0) return true
+
+    let nacimiento = naciTemp.getTime()
+    if ((actualidad - nacimiento) > 568024668000) {
+        return true
+    }
+        return false
+
 }

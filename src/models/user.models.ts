@@ -2,7 +2,10 @@ import mongoose, { Schema, version } from "mongoose"
 
 //schema de la collection
 const user = new Schema({
-    email : {type: String, required: true},
+    id: {type: String, required: true},
+    name: {type: String, required: true, unique: true},
+    lastName: {type: String, required: true},
+    email : {type: String, required: true, unique:true},
     username: String,
     password: {type: String, required: true},
     role: {type: String, required: true},
@@ -15,6 +18,10 @@ const user = new Schema({
 {
     timestamps: true,
     versionKey : false
+})
+
+const search = ({
+    name: {type: String, required: true}
 })
 
 export default mongoose.model("user", user)
