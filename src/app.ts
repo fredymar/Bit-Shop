@@ -2,6 +2,7 @@ import  Express  from "express";
 import dotenv from "dotenv"
 import apiRoutes from "./routes/index"
 import { connectDB } from "./database"
+import cors from "cors"
 
 //CREAR INSTANCIA DE EXPRESS
 
@@ -16,7 +17,11 @@ dotenv.config() // traer la configuracion de env
 connectDB()
 
 //Establecer el puerto en el cual se ejecuta el api
-const port = process.env.PORT || 3200
+const port = process.env.PORT || 3200;
+
+//Especificar que servidores tienen acceso al api
+
+app.use(cors())
 
 //Establecer usos de express
 
