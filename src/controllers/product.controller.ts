@@ -30,8 +30,11 @@ export const createProduct = async (req:Express.Request, res:Express.Response) =
 export const updateProduct = async (req:Express.Request, res:Express.Response) => {
     try {
         let {dataToUpdate, _id} = req.body
+
+        //let {_id} = req.body
+        //let dataToUpdate = req.body
         const updatedData = await productModels.findByIdAndUpdate(_id, dataToUpdate)
-        return res.status(200).json({msg: "Producto Actualizado"})
+        return res.status(204).json({msg: "Producto Actualizado"})
     } catch (error) {
         return res.status(400).json({msg : "Ha ocurrido un error", error}) 
     }
@@ -39,9 +42,19 @@ export const updateProduct = async (req:Express.Request, res:Express.Response) =
 
 export const deleteProduct = async (req:Express.Request, res:Express.Response) => {
     try {
-        let {_id} = req.body
+        let {_id} = req.params
         const deleteData = await productModels.findByIdAndDelete(_id)
         return res.status(200).json({msg: "Producto Eliminado"})
+    } catch (error) {
+        return res.status(400).json({msg : "Ha ocurrido un error", error}) 
+    }
+}
+
+export const uploadImageProduct = async (req:Express.Request, res:Express.Response) => {
+    try {
+        let {file} = req
+
+        res.status(201).json({msg: "Archivo guardado exitosamente"})
     } catch (error) {
         return res.status(400).json({msg : "Ha ocurrido un error", error}) 
     }

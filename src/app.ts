@@ -30,7 +30,6 @@ app.use(Express.json()) // -> decirle a express que entienda json
 // Establecer las rutas a utilizar en el api
 
 app.use("/api", apiRoutes)
-
 // traer una direccion get
 
 
